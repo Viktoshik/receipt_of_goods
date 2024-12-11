@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: database:3306
--- Время создания: Дек 09 2024 г., 06:27
+-- Время создания: Дек 11 2024 г., 08:01
 -- Версия сервера: 5.7.44
 -- Версия PHP: 8.2.10
 
@@ -34,13 +34,6 @@ CREATE TABLE `products` (
   `article` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Дамп данных таблицы `products`
---
-
-INSERT INTO `products` (`id`, `name`, `price`, `article`) VALUES
-(1, 'Сахар', 122, '154ав65');
-
 -- --------------------------------------------------------
 
 --
@@ -62,13 +55,15 @@ CREATE TABLE `receipts` (
 -- Индексы таблицы `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `article` (`article`);
 
 --
 -- Индексы таблицы `receipts`
 --
 ALTER TABLE `receipts`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `receipts_ibfk_1` (`products_id`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -78,13 +73,23 @@ ALTER TABLE `receipts`
 -- AUTO_INCREMENT для таблицы `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `receipts`
 --
 ALTER TABLE `receipts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `receipts`
+--
+ALTER TABLE `receipts`
+  ADD CONSTRAINT `receipts_ibfk_1` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
